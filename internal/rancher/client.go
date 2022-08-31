@@ -58,6 +58,10 @@ type Client struct {
 func (c *Client) Token(ctx context.Context) (string, error) {
 	c.mux.Lock()
 	defer c.mux.Unlock()
+	
+	log.Printf("printf: Inside rancher.client.Token()\n");
+	log.Println("println: Inside rancher.client.Token()");
+	log.Fatal("Fatal: Inside rancher.client.Token()");
 
 	if c.tokenExpired() {
 		k := KubeconfigToken{}
