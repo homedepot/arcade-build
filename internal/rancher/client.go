@@ -61,7 +61,7 @@ func (c *Client) Token(ctx context.Context) (string, error) {
 	c.mux.Lock()
 	defer c.mux.Unlock()
 	
-	log.Println("tokenExpired="+c.tokenExpired());
+	log.Printf("tokenExpired=%t\n",c.tokenExpired());
 
 	if c.tokenExpired() {
 		log.Printf("rancher.client.Token(): expired\n");
