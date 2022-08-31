@@ -41,4 +41,8 @@ jobs:
       - name: docker
         shell: bash    
         run: |
+          ls -l arcade
+          file arcade
           docker/build.sh -v ${VERSION}
+          ls -l arcade
+          file arcade
