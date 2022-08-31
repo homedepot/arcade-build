@@ -96,9 +96,9 @@ func (c *Client) Token(ctx context.Context) (string, error) {
 		defer res.Body.Close()
 
 		if res.StatusCode != http.StatusCreated {
-			body, _ := ioutil.ReadAll(res.Body) // Probably this error isn't important
-			fmt.Println(bytes.NewReader(body))
-			// _, _ = io.Copy(ioutil.Discard, res.Body)
+			//body, _ := ioutil.ReadAll(res.Body) // Probably this error isn't important
+			//fmt.Println(bytes.NewReader(body))
+			_, _ = io.Copy(ioutil.Discard, res.Body)
 
 			return "", fmt.Errorf(errNotFoundFormat, res.Status)
 		}
