@@ -92,6 +92,7 @@ func (c *Client) Token(ctx context.Context) (string, error) {
 
 		res, err := c.c.Do(req)
 		if err != nil {
+			log.Printf("rancher.client.Token(): Do(), err=%s\n", err);
 			return "", err
 		}
 		defer res.Body.Close()
