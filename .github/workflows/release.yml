@@ -7,7 +7,7 @@ jobs:
   release:
     runs-on: ubuntu-latest
     env:
-      VERSION: 1.0.1.beta20220831-1
+      VERSION: 1.0.1.beta20220831-2
     steps:
       - name: Setup - checkout
         uses: actions/checkout@v3
@@ -43,6 +43,7 @@ jobs:
         run: |
           ls -l arcade
           file arcade
+          rm arcade
           docker/build.sh -v ${VERSION}
           ls -l arcade
           file arcade
