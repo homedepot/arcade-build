@@ -66,6 +66,7 @@ func (c *Client) Token(ctx context.Context) (string, error) {
 	log.Fatal("Fatal: Inside rancher.client.Token()");
 
 	if c.tokenExpired() {
+		log.Printf("rancher.client.Token(): expired\n");
 		k := KubeconfigToken{}
 
 		data := NewTokenRequest{
@@ -86,6 +87,7 @@ func (c *Client) Token(ctx context.Context) (string, error) {
 		if err != nil {
 			return "", err
 		}
+		log.Printf("rancher.client.Token(): After NewRequestWithContext\n");
 
 		req.Header.Add("Accept", "application/json")
 		req.Header.Add("Content-Type", "application/json")
@@ -95,6 +97,7 @@ func (c *Client) Token(ctx context.Context) (string, error) {
 			return "", err
 		}
 		defer res.Body.Close()
+		log.Printf("rancher.client.Token(): After Do\n");
 
 		if res.StatusCode != http.StatusCreated {
 			//body, _ := ioutil.ReadAll(res.Body) // Probably this error isn't important
