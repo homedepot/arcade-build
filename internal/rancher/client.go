@@ -61,9 +61,7 @@ func (c *Client) Token(ctx context.Context) (string, error) {
 	c.mux.Lock()
 	defer c.mux.Unlock()
 	
-	log.Printf("printf: Inside rancher.client.Token()\n");
-	log.Println("println: Inside rancher.client.Token()");
-	log.Fatal("Fatal: Inside rancher.client.Token()");
+	log.Println("tokenExpired="+c.tokenExpired());
 
 	if c.tokenExpired() {
 		log.Printf("rancher.client.Token(): expired\n");
@@ -114,6 +112,8 @@ func (c *Client) Token(ctx context.Context) (string, error) {
 
 		c.cachedToken = k
 	}
+	
+	log.Printf("return c.cachedToken.Token\n");
 
 	return c.cachedToken.Token, nil
 }
