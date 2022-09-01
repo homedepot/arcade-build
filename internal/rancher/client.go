@@ -6,7 +6,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"sync"
@@ -60,11 +59,8 @@ type Client struct {
 func (c *Client) Token(ctx context.Context) (string, error) {
 	c.mux.Lock()
 	defer c.mux.Unlock()
-	
-	log.Printf("tokenExpired=%t\n",c.tokenExpired());
 
 	if c.tokenExpired() {
-		log.Printf("rancher.client.Token(): expired\n");
 		k := KubeconfigToken{}
 
 		data := NewTokenRequest{
@@ -83,25 +79,29 @@ func (c *Client) Token(ctx context.Context) (string, error) {
 		// Create the request.
 		req, err := http.NewRequestWithContext(ctx, http.MethodPost, c.url, bytes.NewBuffer(b))
 		if err != nil {
+			log.Printf("NewRequestWithContext(%c), err=%s\n", c.url, err);
 			return "", err
 		}
-		log.Printf("rancher.client.Token(): After NewRequestWithContext\n");
 
 		req.Header.Add("Accept", "application/json")
 		req.Header.Add("Content-Type", "application/json")
 
 		res, err := c.c.Do(req)
 		if err != nil {
-			log.Printf("rancher.client.Token(): Do(), err=%s\n", err);
+			log.Printf("Do(%c), err=%s\n", c.url, err);
 			return "", err
 		}
 		defer res.Body.Close()
-		log.Printf("rancher.client.Token(): After Do\n");
 
 		if res.StatusCode != http.StatusCreated {
-			//body, _ := ioutil.ReadAll(res.Body) // Probably this error isn't important
-			//fmt.Println(bytes.NewReader(body))
-			_, _ = io.Copy(ioutil.Discard, res.Body)
+			buf := make([]byte, 100)
+			size, err := io.ReadAll(res.Body, buf)
+			if err != nil && err != io.ErrUnexpectedEOF {
+				log.Printf("Do(%c), StatusCode=%d, failed to read body: %s\n", c.url, res.StatusCode, err);
+			} else {
+				log.Printf("Do(%c), StatusCode=%d, body: %s\n", c.url, res.StatusCode, resBody);
+				_, _ = io.Copy(ioutil.Discard, res.Body)
+			}
 
 			return "", fmt.Errorf(errNotFoundFormat, res.Status)
 		}
@@ -113,8 +113,6 @@ func (c *Client) Token(ctx context.Context) (string, error) {
 
 		c.cachedToken = k
 	}
-	
-	log.Printf("return c.cachedToken.Token\n");
 
 	return c.cachedToken.Token, nil
 }
