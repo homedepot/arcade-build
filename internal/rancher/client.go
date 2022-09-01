@@ -95,12 +95,12 @@ func (c *Client) Token(ctx context.Context) (string, error) {
 
 		if res.StatusCode != http.StatusCreated {
 			buf := make([]byte, 100)
-			size, err := io.ReadAll(res.Body, buf)
+			_, err := io.ReadFull(res.Body, buf)
 			if err != nil && err != io.ErrUnexpectedEOF {
 				log.Printf("Do(%c), StatusCode=%d, failed to read body: %s\n", c.url, res.StatusCode, err);
 			} else {
-				log.Printf("Do(%c), StatusCode=%d, body: %s\n", c.url, res.StatusCode, resBody);
-				_, _ = io.Copy(ioutil.Discard, res.Body)
+				log.Printf("Do(%c), StatusCode=%d, body: %s\n", c.url, res.StatusCode, buf);
+				_, _ = io.Copy(io.Discard, res.Body)
 			}
 
 			return "", fmt.Errorf(errNotFoundFormat, res.Status)
