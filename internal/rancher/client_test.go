@@ -96,13 +96,13 @@ var _ = Describe("Client", func() {
 		When("the response is not 201 with response greater than 100 characters", func() {
 			BeforeEach(func() {
 				server.AppendHandlers(
-					ghttp.RespondWith(500, "<html>Some really long message!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!</html>),
+					ghttp.RespondWith(500, "<html>Some really long message!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!</html>"),
 				)
 			})
 
 			It("returns an error", func() {
 				Expect(err).ToNot(BeNil())
-				Expect(err.Error()).To(Equal("error getting token: 404 Not Found"))
+				Expect(err.Error()).To(Equal("error getting token: 500 Internal Server Error"))
 				Expect(server.ReceivedRequests()).To(HaveLen(1))
 			})
 		})
