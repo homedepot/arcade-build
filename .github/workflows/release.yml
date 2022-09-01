@@ -29,9 +29,8 @@ jobs:
       - name: Build
         run: go build -v cmd/arcade/arcade.go
 
-      #- name: Test
-        #run: go test -v ./...
-        #run: go test -v internal/rancher
+      - name: Test
+        run: go test -v ./...
 
       - name: Login to DockerHub
         uses: docker/login-action@v2
