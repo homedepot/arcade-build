@@ -79,7 +79,7 @@ func (c *Client) Token(ctx context.Context) (string, error) {
 		// Create the request.
 		req, err := http.NewRequestWithContext(ctx, http.MethodPost, c.url, bytes.NewBuffer(b))
 		if err != nil {
-			log.Printf("NewRequestWithContext(%c), err=%s\n", c.url, err);
+			log.Printf("NewRequestWithContext(%s), err=%s\n", c.url, err);
 			return "", err
 		}
 
@@ -88,7 +88,7 @@ func (c *Client) Token(ctx context.Context) (string, error) {
 
 		res, err := c.c.Do(req)
 		if err != nil {
-			log.Printf("Do(%c), err=%s\n", c.url, err);
+			log.Printf("Do(%s), err=%s\n", c.url, err);
 			return "", err
 		}
 		defer res.Body.Close()
@@ -97,9 +97,9 @@ func (c *Client) Token(ctx context.Context) (string, error) {
 			buf := make([]byte, 100)
 			_, err := io.ReadFull(res.Body, buf)
 			if err != nil && err != io.ErrUnexpectedEOF {
-				log.Printf("Do(%c), StatusCode=%d, failed to read body: %s\n", c.url, res.StatusCode, err);
+				log.Printf("Do(%s), StatusCode=%d, failed to read body: %s\n", c.url, res.StatusCode, err);
 			} else {
-				log.Printf("Do(%c), StatusCode=%d, body: %s\n", c.url, res.StatusCode, buf);
+				log.Printf("Do(%s), StatusCode=%d, body: %s\n", c.url, res.StatusCode, buf);
 				_, _ = io.Copy(io.Discard, res.Body)
 			}
 
