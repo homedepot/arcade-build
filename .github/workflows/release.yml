@@ -1,7 +1,6 @@
 name: Release
 on:
   workflow_dispatch:
-  pull_request:
   
 jobs:
   release:
@@ -18,20 +17,6 @@ jobs:
           go-version: ^1.13
         id: go
 
-      - name: Get dependencies
-        run: |
-          go get -v -t -d ./...
-          if [ -f Gopkg.toml ]; then
-              curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
-              dep ensure
-          fi
-          
-      - name: Build
-        run: go build -v cmd/arcade/arcade.go
-
-      - name: Test
-        run: go test -v ./...
-
       - name: Login to DockerHub
         uses: docker/login-action@v2
         with:
@@ -41,9 +26,6 @@ jobs:
       - name: docker
         shell: bash    
         run: |
-          ls -l arcade
-          file arcade
-          rm arcade
-          docker/build.sh -v ${VERSION}
+          docker/docker-build.sh -v ${VERSION}
           ls -l arcade
           file arcade
