@@ -4,6 +4,7 @@ set -o errexit
 
 # Builds the base image including the solver dependencies
 build_and_publish_image(){
+    export PATH=.:$PATH
     get-dependencies.sh
     GOOS=linux GOARCH=amd64 build.sh
     GCR_TAG="oshomedepot/arcade:${TAG_VERSION}"
