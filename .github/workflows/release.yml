@@ -1,10 +1,9 @@
 name: Release
 on:
   workflow_dispatch:
-    input:
-      name: Version
-      id: VERSION
-      type: string
-      
-jobs:
-  release:
+    inputs:
+      version:
+        type: string
+        description: version to tag image
+
+
