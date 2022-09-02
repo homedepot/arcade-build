@@ -29,7 +29,4 @@ jobs:
 
       - name: docker
         shell: bash    
-        run: |
-          docker/docker-build.sh -v ${VERSION}
-          ls -l arcade
-          file arcade
+        run: docker/docker-build.sh -v ${VERSION}
