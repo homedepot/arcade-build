@@ -1,0 +1,10 @@
+name: Release
+on:
+  workflow_dispatch:
+    input:
+      name: Version
+      id: VERSION
+      type: string
+      
+jobs:
+  release:
