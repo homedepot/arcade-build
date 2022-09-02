@@ -5,7 +5,7 @@ set -o errexit
 # Builds the base image including the solver dependencies
 build_and_publish_image(){
     export PATH=.:$PATH
-    get-dependencies.sh
+    get-dependencies.sh >/dev/null
     GOOS=linux GOARCH=amd64 build.sh
     GCR_TAG="oshomedepot/arcade:${TAG_VERSION}"
     docker build . -f docker/Dockerfile -t ${GCR_TAG}
