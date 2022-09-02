@@ -27,7 +27,7 @@ jobs:
       run: ./get-dependencies.sh
 
     - name: Build
-      run: ./build.sh
+      run: ./build.sh -v
 
     - name: Test
       run: go test -v ./...
